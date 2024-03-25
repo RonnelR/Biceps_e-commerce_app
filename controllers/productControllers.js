@@ -137,7 +137,7 @@ export const updateProductController =async (req,res)=>{
 export const allProductController = async(req,res)=>{
 try {
 
-    const allProduct = await productModel.find({}).select("-photo").sort("createdAt").limit(12)
+    const allProduct = await productModel.find({}).select("-photo").sort("createdAt")
     res.status(200).send({
         success:true,
         noOfProducts:allProduct.length,
