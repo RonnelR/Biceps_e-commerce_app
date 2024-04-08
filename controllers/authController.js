@@ -1,6 +1,25 @@
 import userModel from "../models/userModel.js";
 import {hashpassword , comparePassword} from "../helpers/authHelper.js";
 import JWT from "jsonwebtoken";
+import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+import wishlistModel from "../models/wishlistModel.js";
+
+
+dotenv.config();
+
+//nodemailer
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587, // Use `true` for port 465, `false` for all other ports
+    secure: false,
+    auth: {
+      user: process.env.HOST_MAIL,
+      pass: process.env.HOST_MAIL_PASSWORD,
+    },
+  });
+
 
 
 /*******************************register controller**********************************/
@@ -34,11 +53,7 @@ export const registerController = async (req,res)=>{
                 message:'password is Required'
             })
         }
-        if(!answer){
-            return res.send({
-                message:'answer in required'
-            })
-        }
+        
 
 
         //check existing user
@@ -58,6 +73,10 @@ export const registerController = async (req,res)=>{
        const user = await new userModel({
         name,email,password:hashedpassword,phone,address,answer
     }).save()
+
+        
+
+
        res.status(200).send({
         success:true,
         message:"New user Registerd!",
@@ -108,7 +127,15 @@ export const loginController  = async(req,res) =>{
 
         //token
 
-        const token = JWT.sign({_id:user._id},process.env.TOKEN_SECRET,{expiresIn:'7d'});
+        const token =  JWT?.sign({_id:user._id},process.env.TOKEN_SECRET,{expiresIn:'7d'});
+
+
+        //wishlist user creation
+        const userWishlist = await new wishlistModel({
+            user:user._id,
+            wishlistItems:[]
+        })
+        await userWishlist.save();
 
         res.status(200).send({
             success:true,
@@ -136,9 +163,10 @@ export const loginController  = async(req,res) =>{
 /**************************forget-password controller*******************************/
 
 
+
 export const forgetPasswordController = async(req,res)=>{
  try {
-    const {email,answer,newPassword} = req.body;
+    const {email} = req.body;
 
         //validation
         if(!email){
@@ -146,33 +174,89 @@ export const forgetPasswordController = async(req,res)=>{
                 message:'email is required'
             })
         }
-        if(!answer){
-            return res.send({
-                message:'answer is required'
-            })
-        }
-        if(!newPassword){
-            return res.send({
-                message:'newPassword is required'
-            })
-        }
- 
+    
         //password hassing
-        const user = await userModel.findOne({email,answer})
+        const user = await userModel.findOne({email})
        
         //validation
         if(!user){
             res.status(401).send({
                 message:'Invalid email or answer'
             })
+        }else{
+
+
+      const OTP = Math.floor(1000 + Math.random() * 9000);
+        // send mail with defined transport object
+    const info = await transporter.sendMail({
+    from: process.env.HOST_MAIL, // sender address
+     to: user.email, // list of receivers
+     subject: "Nodemailer Testing", // Subject line
+     text: "tesing!", // plain text body
+         html: `<b>OTP for verification ${OTP} </b>`, // html body
+    });
+
+      console.log("Message sent: %s", info.messageId);
+      // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+
+
+
+            console.log(user)
+            res.status(200).send({
+                success:true,
+                message:'OTP Generated!',
+                otp:`${OTP}`
+            })
         }
+
+ } catch (error) {
+    console.log(error);
+    res.status(501).send({
+        success:false,
+        message:'something went wrong!'
+    })
+ }
+}
+
+//new-password
+export const newPasswordController = async(req,res)=>{
+ try {
+    const {newPassword , confirmPassword ,email } = req.body;
+
+        //validation
+       
+        if(!newPassword){
+            return res.send({
+                message:'new Password is required'
+            })
+        }
+
+        if(!confirmPassword){
+            return res.send({
+                message:'confirm password is required'
+            })
+        }
+
+        if(newPassword === confirmPassword){
+
+
+
+       
         const hash = await hashpassword(newPassword)
-    await userModel.findByIdAndUpdate(user._id,{password:hash})
+
+
+
+    await userModel.findOneAndUpdate({email},{password:hash})
     res.status(200).send({
             success:true,
             message:'password updated successfull!'
         })
-       
+        }else{
+            res.send({
+                message:'password doesnt match '
+            })
+        }
+ 
  } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -181,7 +265,6 @@ export const forgetPasswordController = async(req,res)=>{
     })
  }
 }
-
 
 /*******************************test controller**********************************/
 export const testController = (req ,res)=>{

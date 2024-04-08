@@ -1,14 +1,20 @@
 import JWT from "jsonwebtoken";
 import userModel from "../models/userModel.js";
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 //checking is user already logedin
-export const isSignInRequired = async (req,res,next)=>{
+export const isSignInRequired =async (req,res,next)=>{
     try {
-        const decode = JWT.verify(req.headers.authorization,process.env.TOKEN_SECRET );
-        req.user = decode;
+        const decode =  JWT.verify(req.headers.authorization ,process.env.TOKEN_SECRET );
+         req.user =  decode;
         next();
     } catch (error) {
       console.log(error);
+      res.status(401).send({
+        message:'Error in JWT'
+      })
     }
 };
 

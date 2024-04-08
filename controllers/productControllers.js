@@ -5,6 +5,7 @@ import fs from 'fs';
 import braintree from "braintree";
 import dotenv from 'dotenv'
 import orderModel from "../models/orderModel.js";
+import wishlistModel from "../models/wishlistModel.js";
 
 dotenv.config();
 
@@ -457,6 +458,75 @@ export const updateOrdersController = async (req,res) =>{
             success:false,
             message:'Error in updating orders',
             error
+        })
+    }
+}
+
+
+//wishlist controller
+export const getWishlistController = async (req,res) =>{
+    try {
+const items = await wishlistModel.find({user:req.user._id}).select('wishlistItems').populate('wishlistItems','-photo')
+if(items)
+    res.status(200).send({
+        success:true,
+        totalWishlistProducts:items.length,
+        message:'wishlists products',
+        items
+
+});
+
+    } catch (error) {
+      res.status(402).send({
+        success:false,
+        message:'Error in Wishlist'
+      })
+    }
+}
+
+//addProdToWishlistController
+export const addProdToWishlistController = async (req,res) =>{
+           const {pid} = req.body
+            const {_id} = req.user
+    try {
+
+        const checkProd = await wishlistModel.find({wishlistItems:pid})
+        if(checkProd.length === 0){
+            const addProd = await wishlistModel.findOneAndUpdate({user:_id},{$push:{wishlistItems:pid}},{new:true})
+             res.json({success:true,
+                message:'product added to wishlist',
+                addProd})
+        }else{
+            const addProd = await wishlistModel.findOneAndUpdate({user:_id},{$pull:{wishlistItems:pid}},{new:true})
+            res.json({success:true,
+                message:'product removed from wishlist',
+                addProd})
+    }
+     
+    } catch (error) {
+        res.status(400).send({
+            success:false,
+            message:'Error!',
+            error
+        })
+    }
+  
+}
+
+
+//Delete prod from wishlist controller
+export const deleteProdFromWishlistController = async(req,res) =>{
+    const {pid} = req.body
+    const {_id} = req.user
+    try {
+        const deleteProduct = await wishlistModel.findOneAndUpdate({user:_id},{$pull:{wishlistItems:pid}},{new:true})
+        res.json({success:true,
+            message:'product removed from wishlist',
+            deleteProduct});
+    } catch (error) {
+        res.status(402).send({
+            success:false,
+            message:'Error in deleting product from wishlist'
         })
     }
 }
