@@ -77,7 +77,7 @@ export const registerController = async (req,res)=>{
        })
 
     } catch (error) {
-        res.status(500).send({
+        res.status(501).send({
             success:false,
             message:'Error in registration!',error
         })
