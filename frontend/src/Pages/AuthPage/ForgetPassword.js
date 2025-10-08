@@ -19,7 +19,7 @@ const generateOtp = async (e)=>{
 e.preventDefault();
 try {
 //axios
-const res =await axios.post('/api/v1/auth/forget-password',{email})
+const res =await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/forget-password`,{email})
 
 if(res && res.data.success){
 toast.success(res.data && res.data.message);

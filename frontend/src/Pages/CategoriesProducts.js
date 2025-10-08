@@ -12,7 +12,7 @@ const CategoriesProducts = () => {
 
 const productsBasedOnCategory = async () =>{
   try {
-    const res = await axios.get(`/api/v1/product/products-category/${params.slug}`)
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/products-category/${params.slug}`)
     if(res.data?.success){
       setProducts(res.data?.products)
       setCategory(res.data?.category)  

@@ -26,7 +26,7 @@ toast.error("Password doesnt match");
     }
 const {email} = userOtp
 //axios
-const res =await axios.put('/api/v1/auth/new-password', {email , newPassword ,confirmPassword})
+const res =await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/new-password`, {email , newPassword ,confirmPassword})
 
 if(res && res.data.success){
 toast.success(res.data && res.data.message);

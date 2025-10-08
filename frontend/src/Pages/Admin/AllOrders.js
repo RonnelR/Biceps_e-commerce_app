@@ -15,7 +15,7 @@ const [auth,setAuth] = useAuth({})
 
   const getAllOrderLists = async() =>{
     try {
-      const {data} = await axios.get('/api/v1/product/all-orders')
+      const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/all-orders`)
       setAllOrders(data)
     } catch (error){
       console.log(error)
@@ -29,7 +29,7 @@ useEffect(()=>{
 const handleChange = async(orderId,value) =>{
              
     try {
-        const {data} = await axios.put(`/api/v1/product/update-orders/${orderId}`,{status:value})
+        const {data} = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/update-orders/${orderId}`,{status:value})
         getAllOrderLists()
         
     } catch (error) {

@@ -30,7 +30,7 @@ const [auth,setAuth] = useAuth({})
 //get-all category
 const getAllCat = async()=>{
   try {
-    const res = await axios.get(`/api/v1/category/all-category`)
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/category/all-category`)
     if(res.data?.success){
         setCategory(res.data.allCategory);
     }
@@ -49,7 +49,7 @@ useEffect(() => {
 const getInitialProduct = async()=>{
 
   try {
-    const res = await axios.get(`/api/v1/product/product-list/${page}`)
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-list/${page}`)
     if(res.data?.success){
       setProduct(res.data?.product)
     }
@@ -84,7 +84,7 @@ const handleFilter = (value,id)=>{
 
 const filterProducts = async ()=>{
   try {
-    const res = await axios.post('api/v1/product/product-filter',{checked,radio});
+    const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}api/v1/product/product-filter`,{checked,radio});
     if(res.data?.success){
       setProduct(res.data?.product)
     }
@@ -104,7 +104,7 @@ useEffect(()=>{
 //product total count
 const totalProductCount = async () =>{
       try {
-        const res = await axios.get('/api/v1/product/product-count')
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-count`)
         if(res.data){
           setTotal(res.data?.total)
         }
@@ -118,7 +118,7 @@ const totalProductCount = async () =>{
 const IfLoading = async () =>{
   try {
     setLoading(true)
-    const res = await axios.get(`/api/v1/product/product-list/${page}`);
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-list/${page}`);
     setLoading(false)
     if(res.data?.success){
       setProduct([...product,...res.data?.product])
@@ -151,7 +151,7 @@ const handleCart = (p) =>{
 
 const handleWish = async(pid)=>{
 try {
-  const res = await axios.put('/api/v1/product/wishlist/add-Products',{pid})
+  const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/add-Products`,{pid})
 if(res?.data){
 getWishlist()
   toast(res?.data.message)
@@ -164,7 +164,7 @@ getWishlist()
 //getWishlist
 const getWishlist =async () =>{
   try {
-    const {data} = await axios.get('/api/v1/product/wishlist/get-List')
+    const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/get-List`)
     if(data && data.items && data.items.length > 0){
       setWishlistItems(data.items[0].wishlistItems)
     }

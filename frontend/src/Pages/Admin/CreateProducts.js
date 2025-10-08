@@ -26,7 +26,7 @@ const [shipping,setShipping] = useState("");
 //get-all category
 const getAllCat = async()=>{
   try {
-    const res = await axios.get('/api/v1/category/all-category')
+    const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/category/all-category`)
     if(res.data?.success){
         setCategories(res.data?.allCategory);
     }
@@ -55,7 +55,7 @@ const handleSubmit = async(e)=>{
       productData.append("shipping", shipping);
       
       const { data } = await axios.post(
-        "/api/v1/product/create-product",
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/product/create-product`,
         productData
       );
       if (data?.success) {

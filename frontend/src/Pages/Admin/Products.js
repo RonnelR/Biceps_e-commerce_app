@@ -13,7 +13,7 @@ const Products = () => {
   const getAllProducts = async()=>{
 
     try {
-      const res = await axios.get('/api/v1/product/all-product')
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/all-product`)
       if(res.data?.success){
         setProduct(res.data?.allProduct)
       }

@@ -19,7 +19,7 @@ function Wishlist() {
 
   const getWishlist =async () =>{
     try {
-      const {data} = await axios.get('/api/v1/product/wishlist/get-List')
+      const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/get-List`)
       if(data && data.items && data.items.length > 0){
         setWishlistItems(data.items[0].wishlistItems)
       }
@@ -32,7 +32,7 @@ function Wishlist() {
   //handle remove
   const handleRemove = async (pid) => {
     try {
-      const {data} = await axios.put('/api/v1/product/wishlist/remove-Products',{pid})
+      const {data} = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/remove-Products`,{pid})
       if(data){
         toast.error(data.message)
         getWishlist()

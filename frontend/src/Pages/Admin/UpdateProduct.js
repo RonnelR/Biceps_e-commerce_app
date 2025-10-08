@@ -26,7 +26,7 @@ const UpdateProduct = () => {
     //get single product
     const singleProduct = async () =>{
         try {
-            const res = await axios.get(`/api/v1/product/single-product/${params.slug}`)
+            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/single-product/${params.slug}`)
            if(res.data?.success){
             setName(res.data.singleProd.name);
             setDescription(res.data.singleProd.description);
@@ -52,7 +52,7 @@ const UpdateProduct = () => {
     //get-all category
     const getAllCat = async()=>{
       try {
-        const res = await axios.get('/api/v1/category/all-category')
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/category/all-category`)
         if(res.data?.success){
             setCategories(res.data?.allCategory);
         }
@@ -79,7 +79,7 @@ const UpdateProduct = () => {
           photo && productData.append("photo", photo);
           category && productData.append("category", category);
           productData.append("shipping", shipping);
-          const res = await axios.put(`/api/v1/product/update-product/${id}`,
+          const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/update-product/${id}`,
             productData
           );
         if(res.data?.success){
@@ -100,7 +100,7 @@ const UpdateProduct = () => {
           let answer = window.prompt("Are You Sure want to delete this product ? ");
           if (!answer) return;
           const res = await axios.delete(
-            `/api/v1/product/delete-product/${id}`
+            `${process.env.REACT_APP_BACKEND_URL}/api/v1/product/delete-product/${id}`
           );
           toast.success("Product Deleted Succfully");
           navigate("/dashboard/admin/products");

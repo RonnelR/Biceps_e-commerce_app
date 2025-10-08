@@ -37,7 +37,7 @@ try {
 
 //axios
 
- const res = await axios.put('/api/v1/auth/profile',{name,email,password,phone,address})
+ const res = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/profile`,{name,email,password,phone,address})
 
   if (res?.data.error) { 
     toast.error('error in profile updation')

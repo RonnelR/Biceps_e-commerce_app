@@ -25,7 +25,7 @@ try {
 
 //axios
 
-  const res = await axios.post('/api/v1/auth/register',{name,email,password,phone,address})
+  const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/register`,{name,email,password,phone,address})
   
   if (res && res.data.success) {
     toast.success( res.data && res.data.message);

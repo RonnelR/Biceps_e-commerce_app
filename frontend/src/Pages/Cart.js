@@ -48,7 +48,7 @@ const handleRemove = (pid) =>{
 
 //braintree token 
 const braintreeToken = async () =>{
-  const res = await axios.get('/api/v1/product/braintree/token')
+  const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/braintree/token`)
   if(res?.data){
     setClientToken(res?.data?.clientToken)
   }
@@ -64,7 +64,7 @@ const handlePayment = async () =>{
   try {
     setLoading(true)
     const { nonce } = await instance.requestPaymentMethod();
-    const {data} = await axios.post('/api/v1/product/braintree/payment',{nonce,cart})
+    const {data} = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/braintree/payment`,{nonce,cart})
     setLoading(false)
     
       setCart([]);

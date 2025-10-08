@@ -12,7 +12,7 @@ export default function AdminPrivateRoute() {
 
   useEffect(() => {
     const authCheck = async () => {
-      const res = await axios.get('/api/v1/auth/admin-required')
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/admin-required`)
       if (res?.data.ok) {
         setOk(true);
       } else {

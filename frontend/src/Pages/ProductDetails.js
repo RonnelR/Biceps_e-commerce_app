@@ -17,7 +17,7 @@ const ProductDetails = () => {
 const getProdDetails = async() =>{
     try {
         
-        const res = await axios.get(`/api/v1/product/single-product/${params.slug}`)
+        const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/single-product/${params.slug}`)
         if(res.data?.success){
             setProduct(res.data?.singleProd)
     similarProducts(res.data?.singleProd._id,res.data?.singleProd?.category?._id)
@@ -32,7 +32,7 @@ const getProdDetails = async() =>{
 //similar products
 const similarProducts = async (pid,cid) =>{
         try {
-            const res =  await axios.get(`/api/v1/product/relared-products/${pid}/${cid}`)
+            const res =  await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/relared-products/${pid}/${cid}`)
             if(res.data?.success){
                 setRelatedProducts(res.data?.product)
             }

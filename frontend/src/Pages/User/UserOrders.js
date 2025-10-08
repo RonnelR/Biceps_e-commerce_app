@@ -12,7 +12,7 @@ const [auth,setAuth] = useAuth({})
 
   const getOrderLists = async() =>{
     try {
-      const {data} = await axios.get('/api/v1/product/order-lists')
+      const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/order-lists`)
       setOrders(data)
     } catch (error) {
       console.log(error)
