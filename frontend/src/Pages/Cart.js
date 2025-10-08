@@ -66,11 +66,14 @@ const Cart = () => {
         `${process.env.REACT_APP_BACKEND_URL}/api/v1/product/braintree/payment`,
         { nonce, cart }
       );
-      setLoading(false);
+      if(data){
+ setLoading(false);
       setCart([]);
       localStorage.setItem('cart', JSON.stringify([]));
       navigate('/dashboard/user/orders');
       toast.success('Payment Completed Successfully');
+      }
+     
     } catch (error) {
       console.log(error);
       setLoading(false);
