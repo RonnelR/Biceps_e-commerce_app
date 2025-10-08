@@ -6,7 +6,7 @@ import { useAuth } from "../../Context/Auth";
 
 export default function PrivateRoute() {
   const [ok, setOk] = useState(false);
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
 
   useEffect(() => {
     const authCheck = async () => {
@@ -19,6 +19,7 @@ export default function PrivateRoute() {
     };
 
     if (auth?.token) authCheck();
+     //eslint-disable-next-line
   }, [auth?.token]);
 
   return ok ? <Outlet /> : <Spinner />;

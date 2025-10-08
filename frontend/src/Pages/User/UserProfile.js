@@ -28,6 +28,7 @@ const UserProfile = () => {
         setEmail(email)
         setAddress(address)
         setPhone(phone)
+         //eslint-disable-next-line
   },[auth?.user])
 
 //handle update function 

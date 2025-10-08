@@ -7,7 +7,7 @@ import UserMenu from '../../Components/Layouts/UserMenu';
 
 const Dashboard = () => {
 
-    const [auth,setAuth] = useAuth();
+    const [auth] = useAuth();
 
   return (
     <Layout title = {"Admin Dashboard - Biceps"}>

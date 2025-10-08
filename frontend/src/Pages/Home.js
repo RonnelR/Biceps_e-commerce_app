@@ -121,16 +121,19 @@ const Home = () => {
     getTotalCount();
     getProducts();
     if (auth?.token) getWishlist();
+    //eslint-disable-next-line
   }, [auth?.token]);
 
   useEffect(() => {
     if (checked.length || radio.length) filterProducts();
     else getProducts();
+     //eslint-disable-next-line
   }, [checked, radio]);
 
   useEffect(() => {
     if (page === 1) return;
     loadMore();
+     //eslint-disable-next-line
   }, [page]);
 
   return (

@@ -8,7 +8,7 @@ import moment from 'moment'
 const UserOrders = () => {
 
 const [orders,setOrders] = useState([])
-const [auth,setAuth] = useAuth({})
+const [auth] = useAuth({})
 
   const getOrderLists = async() =>{
     try {
@@ -21,6 +21,7 @@ const [auth,setAuth] = useAuth({})
 
 useEffect(()=>{
     getOrderLists()
+     //eslint-disable-next-line
 },[auth?.token])
 
   return (

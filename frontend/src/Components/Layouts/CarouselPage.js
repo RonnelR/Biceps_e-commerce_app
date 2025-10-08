@@ -13,19 +13,19 @@ const CarouselPage = () => {
 
 <Carousel autoplay effect="fade">
     <div>
-    <img className='img img-responsive' style={{width:"100%"}} height="300px" src={WO1}/>
+    <img alt='banner 1' className='img img-responsive' style={{width:"100%"}} height="300px" src={WO1}/>
      
     </div>
     <div>
-    <img className='img img-responsive' style={{width:"100%"}} height="300px" src={WO2}/>
+    <img alt='banner 2' className='img img-responsive' style={{width:"100%"}} height="300px" src={WO2}/>
 
     </div>
     <div>
-    <img className='img img-responsive' style={{width:"100%"}}  height="300px" src={WO3}/>
+    <img alt='banner 3' className='img img-responsive' style={{width:"100%"}}  height="300px" src={WO3}/>
 
     </div>
     <div>
-    <img className='img img-responsible' style={{width:"100%"}} height="300px" src={WO4}/>
+    <img alt='banner 4' className='img img-responsible' style={{width:"100%"}} height="300px" src={WO4}/>
 
     </div>
   </Carousel>

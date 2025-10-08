@@ -36,6 +36,7 @@ const Wishlist = () => {
 
   useEffect(() => {
     if (auth?.token) getWishlist();
+     //eslint-disable-next-line
   }, [auth?.token]);
 
   return (

@@ -75,6 +75,7 @@ const CreateCategories = () => {
 
   useEffect(() => {
     getAllCat();
+     //eslint-disable-next-line
   }, []);
 
   return (

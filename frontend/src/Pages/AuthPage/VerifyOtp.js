@@ -10,7 +10,7 @@ const VerifyOtp = () => {
  //useState
  const [otp,setOTP] = useState('');
  const [count,setCount] = useState(30)
-const [userOtp,setUserOtp] = useOtp();
+const [userOtp] = useOtp();
 
  //useNavigate config
    const navigate = useNavigate();
@@ -46,7 +46,7 @@ const [userOtp,setUserOtp] = useOtp();
   clearInterval(interval);
   count === 0 && navigate('/ForgetPassword') 
  }
-
+ //eslint-disable-next-line
  },[count])
  
    return (

@@ -8,7 +8,7 @@ import {useOtp} from '../../Context/OtpContext'
 const ForgetPassword = () => {
   //useState
   const [email,setEmail] = useState();
-  const [userOtp,setUserOtp] = useOtp()
+  const [setUserOtp] = useOtp()
 
 //useNavigate config
   const navigate = useNavigate();

@@ -6,7 +6,7 @@ import { useAuth } from "../../Context/Auth";
 
 export default function AdminPrivateRoute() {
   const [ok, setOk] = useState(false);
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
 
 
 
@@ -20,6 +20,7 @@ export default function AdminPrivateRoute() {
       }
     };
     if (auth?.token) authCheck();
+     //eslint-disable-next-line
   }, [auth?.token]);
 
   return ok ? <Outlet /> : <Spinner />;

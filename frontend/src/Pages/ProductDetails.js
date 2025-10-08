@@ -53,6 +53,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (params.slug) getProductDetails();
+     //eslint-disable-next-line
   }, [params.slug]);
 
   return (

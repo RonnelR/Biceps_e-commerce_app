@@ -11,7 +11,7 @@ const AllOrders = () => {
 
 const [allOrders,setAllOrders] = useState([])
 const [status,setStatus] = useState(["Not Processing","Processing","Shipped","Delivered","Cancel"])
-const [auth,setAuth] = useAuth({})
+const [auth] = useAuth({})
 
   const getAllOrderLists = async() =>{
     try {
@@ -24,6 +24,7 @@ const [auth,setAuth] = useAuth({})
 
 useEffect(()=>{
     getAllOrderLists()
+     //eslint-disable-next-line
 },[auth?.token])
 
 const handleChange = async(orderId,value) =>{

@@ -8,7 +8,7 @@ import {useOtp} from '../../Context/OtpContext'
 const NewPassword = () => {
    
     //glogal state
-    const [userOtp,setUserOtp] = useOtp()
+    const [userOtp] = useOtp()
   const [newPassword,setNewPassword] = useState('');
   const [confirmPassword,setConfirmPassword] = useState('')
 

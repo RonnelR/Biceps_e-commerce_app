@@ -31,6 +31,7 @@ const CreateProducts = () => {
 
   useEffect(() => {
     getAllCat();
+     //eslint-disable-next-line
   }, []);
 
   // Create product

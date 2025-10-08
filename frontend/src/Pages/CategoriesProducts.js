@@ -27,6 +27,7 @@ useEffect(()=>{
   if(params?.slug){
     productsBasedOnCategory()
   }
+   //eslint-disable-next-line
 },[params?.slug])
 
   return (

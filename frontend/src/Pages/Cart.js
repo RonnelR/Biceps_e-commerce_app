@@ -11,7 +11,7 @@ const Cart = () => {
 
 
 const [cart, setCart] = useCart();
-const [auth, setAuth] = useAuth();
+const [auth] = useAuth();
 const [clientToken, setClientToken] = useState('')
 const [instance,setInstance] = useState('')
 const [loading,setLoading] = useState(false)
@@ -56,6 +56,7 @@ const braintreeToken = async () =>{
 
 useEffect(()=>{
   braintreeToken()
+   //eslint-disable-next-line
 },[auth?.token])
 
 
