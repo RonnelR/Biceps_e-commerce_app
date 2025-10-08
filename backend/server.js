@@ -17,9 +17,27 @@ connectDB();
 //rest object
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:3000",         // local dev
+  "https://biceps-e-commerce-app.onrender.com"  // deployed frontend
+];
+
+//middleware
+colors.enable();
+app.use(express.json());
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
 //middlewares
 colors.enable();
-app.use(cors());
+
 app.use(express.json());
 app.use(morgan('dev'));
 
