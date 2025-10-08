@@ -1,2 +1,15 @@
+# Root env
 .env
+
+# Node modules
 node_modules/
+
+# Backend
+/backend/node_modules/
+# Add backend .env if exists
+/backend/.env
+
+# Frontend
+/frontend/node_modules/
+# Ignore frontend env
+/frontend/.env
