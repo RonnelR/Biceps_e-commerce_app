@@ -31,8 +31,7 @@ const AuthProvider = ({children})=>{
     }
 
     //eslint-disable-next-line
-    
-    },[]);
+    },[auth]);
 
     return (
         <AuthContext.Provider value = {[auth,setAuth]}>

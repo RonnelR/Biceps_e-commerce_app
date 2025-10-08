@@ -10,7 +10,7 @@ const { Option } = Select;
 const AllOrders = () => {
 
 const [allOrders,setAllOrders] = useState([])
-const [status,setStatus] = useState(["Not Processing","Processing","Shipped","Delivered","Cancel"])
+const [status] = useState(["Not Processing","Processing","Shipped","Delivered","Cancel"])
 const [auth] = useAuth({})
 
   const getAllOrderLists = async() =>{
@@ -31,7 +31,10 @@ const handleChange = async(orderId,value) =>{
              
     try {
         const {data} = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/update-orders/${orderId}`,{status:value})
+        if(data){
         getAllOrderLists()
+
+        }
         
     } catch (error) {
         console.log(error)

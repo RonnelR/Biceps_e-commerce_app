@@ -13,7 +13,7 @@ const Header = () => {
 
 const categories = useCategory();
 const [auth, setAuth]= useAuth();
-const [cart,setCart] = useCart()
+const [cart] = useCart()
 
 const logoutButton = ()=>{
   setAuth({
