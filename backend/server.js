@@ -19,7 +19,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",         // local dev
-  "https://biceps-e-commerce-app.onrender.com"  // deployed frontend
+  "https://biceps-ecommerce.netlify.app"  // deployed frontend
 ];
 
 //middleware
