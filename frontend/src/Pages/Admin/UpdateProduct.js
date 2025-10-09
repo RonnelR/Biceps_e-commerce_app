@@ -56,7 +56,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     getSingleProduct();
     getAllCategories();
-     //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   // Update product
@@ -99,54 +99,130 @@ const UpdateProduct = () => {
 
   return (
     <Layout title="Update Product - Biceps">
-      <div className="container-fluid m-3 p-3">
+      <div className="container-fluid my-4">
         <div className="row">
-          <div className="col-3"><AdminMenu /></div>
-          <div className="col-9">
-            <h3 className="pnf-title">Update Product</h3>
-            <form onSubmit={handleUpdate} className="w-75">
-              <Select
-                className="col-md-12 mb-3"
-                placeholder="Select category"
-                value={category}
-                onChange={(value) => setCategory(value)}
-              >
-                {categories.map((c) => (
-                  <Option key={c._id} value={c._id}>{c.name}</Option>
-                ))}
-              </Select>
+          {/* Sidebar */}
+          <div className="col-md-3 mb-3">
+            <AdminMenu />
+          </div>
 
-              <div className="mb-3">
-                <label className="btn btn-outline-secondary col-md-12">
-                  {photo ? photo.name : 'Upload Photo'}
-                  <input
-                    type="file"
-                    name="photo"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                  />
-                </label>
-              </div>
+          {/* Form */}
+          <div className="col-md-9">
+            <div className="card shadow authBody p-4">
+              <h3 className="text-center mb-4">Update Product</h3>
+              <form onSubmit={handleUpdate} className="w-100">
+                {/* Category */}
+                <Select
+                  className="col-12 mb-3"
+                  placeholder="Select category"
+                  value={category}
+                  onChange={(value) => setCategory(value)}
+                >
+                  {categories.map((c) => (
+                    <Option key={c._id} value={c._id}>
+                      {c.name}
+                    </Option>
+                  ))}
+                </Select>
 
-              {photo ? (
-                <img src={URL.createObjectURL(photo)} alt="product" height="200" className="img-responsive mb-3" />
-              ) : (
-                <img src={`/api/v1/product/product-photo/${id}`} alt="product" height="200" className="img-responsive mb-3" />
-              )}
+                {/* Photo */}
+                <div className="mb-3 text-center">
+                  <label className="btn btn-outline-secondary col-12">
+                    {photo ? photo.name : 'Upload Photo'}
+                    <input
+                      type="file"
+                      name="photo"
+                      accept="image/*"
+                      hidden
+                      onChange={(e) => setPhoto(e.target.files[0])}
+                    />
+                  </label>
+                </div>
 
-              <input type="text" className="form-control mb-3" value={name} onChange={(e) => setName(e.target.value)} placeholder="Product name" />
-              <textarea className="form-control mb-3" rows={4} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Product description" />
-              <input type="number" className="form-control mb-3" value={quantity} onChange={(e) => setQuantity(e.target.value)} placeholder="Quantity" />
-              <input type="number" className="form-control mb-3" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
-              <Select className="col-md-12 mb-3" placeholder="Shipping" value={shipping} onChange={(value) => setShipping(value)}>
-                <Option value={1}>YES</Option>
-                <Option value={0}>NO</Option>
-              </Select>
+                {/* Image Preview */}
+                <div className="text-center mb-3">
+                  {photo ? (
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="product"
+                      height="200"
+                      className="img img-responsive rounded"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${id}`}
+                      alt="product"
+                      height="200"
+                      className="img img-responsive rounded"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  )}
+                </div>
 
-              <button type="submit" className="btn btn-primary m-2">UPDATE PRODUCT</button>
-              <button type="button" onClick={handleDelete} className="btn btn-danger m-2">DELETE PRODUCT</button>
-            </form>
+                {/* Name */}
+                <input
+                  type="text"
+                  className="form-control mb-3"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Product name"
+                  required
+                />
+
+                {/* Description */}
+                <textarea
+                  className="form-control mb-3"
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Product description..."
+                  required
+                />
+
+                {/* Quantity */}
+                <input
+                  type="number"
+                  className="form-control mb-3"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  placeholder="Quantity"
+                  required
+                />
+
+                {/* Price */}
+                <input
+                  type="number"
+                  className="form-control mb-3"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Price"
+                  required
+                />
+
+                {/* Shipping */}
+                <Select
+                  className="col-12 mb-3"
+                  placeholder="Select shipping"
+                  value={shipping}
+                  onChange={(value) => setShipping(value)}
+                  required
+                >
+                  <Option value={1}>YES</Option>
+                  <Option value={0}>NO</Option>
+                </Select>
+
+                {/* Buttons */}
+                <div className="text-center">
+                  <button type="submit" className="btn btn-primary m-2 col-md-4">
+                    UPDATE PRODUCT
+                  </button>
+                  <button type="button" onClick={handleDelete} className="btn btn-danger m-2 col-md-4">
+                    DELETE PRODUCT
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

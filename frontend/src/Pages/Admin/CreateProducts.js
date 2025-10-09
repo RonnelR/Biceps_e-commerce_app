@@ -5,6 +5,7 @@ import { Select } from 'antd';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 const { Option } = Select;
 
 const CreateProducts = () => {
@@ -16,7 +17,7 @@ const CreateProducts = () => {
   const [photo, setPhoto] = useState(null);
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
-  const [shipping, setShipping] = useState('');
+  const [shipping, setShipping] = useState(null); // initialize with null
 
   // Fetch all categories
   const getAllCat = async () => {
@@ -31,12 +32,16 @@ const CreateProducts = () => {
 
   useEffect(() => {
     getAllCat();
-     //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   // Create product
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!shipping) {
+      toast.error('Please select shipping option');
+      return;
+    }
     try {
       const productData = new FormData();
       productData.append('name', name);
@@ -62,92 +67,120 @@ const CreateProducts = () => {
 
   return (
     <Layout title={'Create Product - Biceps'}>
-      <div className="container-fluid m-3 p-3">
+      <div className="container-fluid my-4">
         <div className="row">
-          <div className="col-3"><AdminMenu /></div>
-          <div className="col-md-8 m-3">
-            <div className="authBody text-center">
-              <h4 className="pnf-title text-center">CREATE PRODUCTS</h4>
+          {/* Sidebar */}
+          <div className="col-md-3 mb-3">
+            <AdminMenu />
+          </div>
+
+          {/* Form */}
+          <div className="col-md-8">
+            <div className="card shadow authBody p-4">
+              <h4 className="text-center mb-4">CREATE PRODUCT</h4>
               <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <Select
-                    className="col-md-12 mb-3"
-                    placeholder="Select category..."
-                    value={category}
-                    onChange={(value) => setCategory(value)}
-                  >
-                    {categories.map((c) => (
-                      <Option key={c._id} value={c._id}>{c.name}</Option>
-                    ))}
-                  </Select>
+                {/* Category Select */}
+                <Select
+                  className="col-12 mb-3"
+                  placeholder="Select Category"
+                  value={category || null}
+                  onChange={(value) => setCategory(value)}
+                  required
+                >
+                  <Option value={null} disabled>
+                    Please select category
+                  </Option>
+                  {categories.map((c) => (
+                    <Option key={c._id} value={c._id}>{c.name}</Option>
+                  ))}
+                </Select>
 
-                  <div className="mb-3">
-                    <label className="btn btn-outline-secondary col-md-12">
-                      {photo ? photo.name : 'Upload Photo'}
-                      <input
-                        type="file"
-                        name="photo"
-                        accept="image/*"
-                        onChange={(e) => setPhoto(e.target.files[0])}
-                        hidden
-                      />
-                    </label>
+                {/* Photo Upload */}
+                <div className="mb-3 text-center">
+                  <label className="btn btn-outline-secondary col-12">
+                    {photo ? photo.name : 'Upload Photo'}
+                    <input
+                      type="file"
+                      name="photo"
+                      accept="image/*"
+                      onChange={(e) => setPhoto(e.target.files[0])}
+                      hidden
+                    />
+                  </label>
+                </div>
+
+                {photo && (
+                  <div className="text-center mb-3">
+                    <img
+                      src={URL.createObjectURL(photo)}
+                      alt="product_photo"
+                      height="200px"
+                      className="img img-responsive rounded"
+                      style={{ objectFit: 'cover' }}
+                    />
                   </div>
+                )}
 
-                  {photo && (
-                    <div className="text-center mb-3">
-                      <img
-                        src={URL.createObjectURL(photo)}
-                        alt="product_photo"
-                        height="200px"
-                        className="img img-responsive"
-                      />
-                    </div>
-                  )}
+                {/* Name */}
+                <input
+                  type="text"
+                  className="form-control mb-3"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Product name"
+                  required
+                />
 
-                  <input
-                    type="text"
-                    className="form-control mb-3"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Product name"
-                  />
+                {/* Description */}
+                <textarea
+                  className="form-control mb-3"
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="Product description..."
+                  required
+                />
 
-                  <textarea
-                    className="form-control mb-3"
-                    rows={4}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Product description..."
-                  />
+                {/* Quantity */}
+                <input
+                  type="number"
+                  className="form-control mb-3"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  placeholder="Product quantity"
+                  required
+                />
 
-                  <input
-                    type="number"
-                    className="form-control mb-3"
-                    value={quantity}
-                    onChange={(e) => setQuantity(e.target.value)}
-                    placeholder="Product quantity"
-                  />
+                {/* Price */}
+                <input
+                  type="number"
+                  className="form-control mb-3"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Product price"
+                  required
+                />
 
-                  <input
-                    type="number"
-                    className="form-control mb-3"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    placeholder="Product price"
-                  />
+                {/* Shipping */}
+                <Select
+                  className="col-12 mb-3"
+                  value={shipping}
+                  placeholder="Select Shipping"
+                  onChange={(value) => setShipping(value)}
+                  required
+                >
+                  <Option value={null} disabled>
+                    Please select shipping
+                  </Option>
+                  <Option value={1}>YES</Option>
+                  <Option value={0}>NO</Option>
+                </Select>
 
-                  <Select
-                    placeholder="Shipping"
-                    className="col-md-12 mb-3"
-                    value={shipping}
-                    onChange={(value) => setShipping(value)}
-                  >
-                    <Option value={1}>YES</Option>
-                    <Option value={0}>NO</Option>
-                  </Select>
-
-                  <button className="btn btn-primary" type="submit">CREATE PRODUCT</button>
+                {/* Submit Button */}
+                <div className="text-center">
+                  <button className="btn btn-primary col-6" type="submit">
+                    CREATE PRODUCT
+                  </button>
                 </div>
               </form>
             </div>

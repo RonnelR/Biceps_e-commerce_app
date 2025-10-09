@@ -4,6 +4,7 @@ import AdminMenu from '../../Components/Layouts/AdminMenu';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { Tooltip } from 'antd';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -20,36 +21,68 @@ const Products = () => {
 
   useEffect(() => {
     getAllProducts();
-     //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   return (
     <Layout title="All Products - Biceps">
-      <div className="container-fluid">
+      <div className="container-fluid my-4">
         <div className="row">
-          <div className="col-md-3"><AdminMenu /></div>
+          {/* Sidebar */}
+          <div className="col-md-3 mb-3">
+            <AdminMenu />
+          </div>
+
+          {/* Products */}
           <div className="col-md-9">
-            <div className="text-center authBody mt-3">
-              <h4 className="pnf-title text-center mt-3">PRODUCTS</h4>
-              <div className="d-flex flex-wrap">
+            <div className="card shadow authBody p-4">
+              <h4 className="text-center mb-4">PRODUCTS</h4>
+
+              {products.length < 1 && <p className="text-center w-100">No products found</p>}
+
+              <div className="row g-3">
                 {products.map((p) => (
-                  <Link key={p._id} to={`/dashboard/admin/products/${p.slug}`} className="product-link">
-                    <div className="card m-2" style={{ width: '10rem' }}>
-                      <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} className="card-img-top" alt={p.name} />
-                      <hr />
-                      <div className="card-body text-center">
-                        <h5 className="card-title">{p.name}</h5>
-                        <h5 className="card-title">₹ {p.price}</h5>
-                        <h6 className="card-text">{p.description.length > 20 ? `${p.description.substring(0, 20)}...` : p.description}</h6>
+                  <div key={p._id} className="col-6 col-sm-6 col-md-4 col-lg-3">
+                    <Link
+                      to={`/dashboard/admin/products/${p.slug}`}
+                      className="text-decoration-none text-dark"
+                    >
+                      <div className="card h-100 shadow-sm rounded hover-shadow">
+                        <div className="overflow-hidden">
+                          <img
+                            src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`}
+                            alt={p.name}
+                            className="card-img-top"
+                            style={{ height: '180px', objectFit: 'cover', transition: 'transform 0.3s' }}
+                          />
+                        </div>
+                        <div className="card-body text-center p-3">
+                          <h5 className="card-title mb-1">{p.name}</h5>
+                          <h6 className="text-primary mb-2">₹ {p.price}</h6>
+                          <Tooltip title={p.description}>
+                            <p className="card-text text-muted mb-0">
+                              {p.description.length > 40 ? `${p.description.substring(0, 40)}...` : p.description}
+                            </p>
+                          </Tooltip>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 ))}
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .hover-shadow:hover img {
+          transform: scale(1.05);
+        }
+        .hover-shadow:hover {
+          box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        }
+      `}</style>
     </Layout>
   );
 };

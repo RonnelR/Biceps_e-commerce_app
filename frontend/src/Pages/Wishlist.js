@@ -36,30 +36,36 @@ const Wishlist = () => {
 
   useEffect(() => {
     if (auth?.token) getWishlist();
-     //eslint-disable-next-line
+    //eslint-disable-next-line
   }, [auth?.token]);
 
   return (
     <Layout title="Wishlist - Biceps">
-      <div className="container mt-3">
-        <h4 className="pnf-title text-center mt-2">WISHLIST</h4>
-        {wishlistItems.length < 1 && <p className="text-center">Wishlist is empty</p>}
+      <div className="container my-4">
+        <h3 className="text-center mb-4">Wishlist</h3>
 
-        <div className="text-center m-5">
+        {wishlistItems.length < 1 && (
+          <p className="text-center text-muted">Your wishlist is empty</p>
+        )}
+
+        <div className="row g-3">
           {wishlistItems.map((p) => (
-            <div className="authBody row card flex-row mt-3" key={p._id}>
-              <div className="col-md-8" style={{ width: '15rem' }}>
-                <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top" />
-              </div>
-              <div className="col-md-4 mt-5">
-                <h6 className="h6">Name: {p.name}</h6>
-                <h6 className="h4 text-dark">Price: ₹{p.price}</h6>
-                <p className="h6 text-dark">Description: {p.description?.length > 20 ? `${p.description.substring(0, 20)}...` : p.description}</p>
-                <div className="m-1">
-                  <button className="btn btn-danger" onClick={() => handleRemove(p._id)}>REMOVE</button>
-                </div>
-                <div className="m-1">
-                  <button className="btn btn-primary" onClick={() => navigate(`/product-details/${p.slug}`)}>MORE</button>
+            <div className="col-md-6" key={p._id}>
+              <div className="card shadow h-100 flex-row p-3 align-items-center">
+                <img
+                  src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`}
+                  alt={p.name}
+                  className="img-fluid rounded"
+                  style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                />
+                <div className="ms-3 flex-grow-1">
+                  <h5 className="mb-1">{p.name}</h5>
+                  <p className="mb-1 text-dark"><strong>Price:</strong> ₹{p.price}</p>
+                  <p className="mb-2 text-muted">{p.description?.length > 50 ? `${p.description.substring(0, 50)}...` : p.description}</p>
+                  <div className="d-flex flex-wrap gap-2">
+                    <button className="btn btn-danger btn-sm" onClick={() => handleRemove(p._id)}>Remove</button>
+                    <button className="btn btn-primary btn-sm" onClick={() => navigate(`/product-details/${p.slug}`)}>View</button>
+                  </div>
                 </div>
               </div>
             </div>

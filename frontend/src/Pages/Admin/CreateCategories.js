@@ -13,7 +13,11 @@ const CreateCategories = () => {
   const [selected, setSelected] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const showModal = () => setIsModalOpen(true);
+  const showModal = (category) => {
+    setSelected(category);
+    setUpdatedName(category.name);
+    setIsModalOpen(true);
+  };
   const handleCancel = () => setIsModalOpen(false);
 
   // Get all categories
@@ -75,40 +79,69 @@ const CreateCategories = () => {
 
   useEffect(() => {
     getAllCat();
-     //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   return (
     <Layout title={'Manage Categories - Biceps'}>
-      <div className="container-fluid m-3 p-3">
+      <div className="container-fluid my-4">
         <div className="row">
-          <div className="col-3"><AdminMenu /></div>
-          <div className="col-7 text-center">
-            <div className="authBody text-center">
-              <h4 className="pnf-title text-center">MANAGE CATEGORIES</h4>
+          {/* Sidebar */}
+          <div className="col-md-3 mb-3">
+            <AdminMenu />
+          </div>
+
+          {/* Main Content */}
+          <div className="col-md-8">
+            <div className="card shadow authBody p-4">
+              <h4 className="text-center mb-4">MANAGE CATEGORIES</h4>
+
+              {/* Create Category Form */}
               <CategoryForm value={name} setValue={setName} handleSubmit={handleSubmit} />
-              <table className="table mt-3">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {categories.map((c) => (
-                    <tr key={c._id}>
-                      <td>{c.name}</td>
-                      <td>
-                        <button className="btn btn-primary m-1" onClick={() => { showModal(); setUpdatedName(c.name); setSelected(c); }}>Edit</button>
-                        <Modal title="Update Category" open={isModalOpen} footer={null} onCancel={handleCancel}>
-                          <CategoryForm value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
-                        </Modal>
-                        <button className="btn btn-danger" onClick={() => handleDelete(c._id)}>Delete</button>
-                      </td>
+
+              {/* Categories Table */}
+              <div className="table-responsive mt-4">
+                <table className="table table-bordered table-hover text-center">
+                  <thead className="table-dark">
+                    <tr>
+                      <th>Name</th>
+                      <th>Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {categories.map((c) => (
+                      <tr key={c._id}>
+                        <td>{c.name}</td>
+                        <td>
+                          <button
+                            className="btn btn-primary btn-sm me-2 mb-1"
+                            onClick={() => showModal(c)}
+                          >
+                            Edit
+                          </button>
+
+                          <Modal
+                            title="Update Category"
+                            open={isModalOpen}
+                            footer={null}
+                            onCancel={handleCancel}
+                          >
+                            <CategoryForm value={updatedName} setValue={setUpdatedName} handleSubmit={handleUpdate} />
+                          </Modal>
+
+                          <button
+                            className="btn btn-danger btn-sm mb-1"
+                            onClick={() => handleDelete(c._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
             </div>
           </div>
         </div>
