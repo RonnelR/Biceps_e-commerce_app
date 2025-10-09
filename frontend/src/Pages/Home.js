@@ -168,7 +168,7 @@ const Home = () => {
             <div className="d-flex flex-wrap">
               {products.map((p) => (
                 <div className="card m-3 text-center cardStyle" key={p._id} style={{ width: '15rem' }}>
-                  <img src={`/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top mt-3" />
+                  <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top mt-3" />
 
                   {auth?.token && (
                     <button className="wishlistButton" onClick={() => handleWish(p._id)}>

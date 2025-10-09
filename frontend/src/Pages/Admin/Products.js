@@ -35,7 +35,7 @@ const Products = () => {
                 {products.map((p) => (
                   <Link key={p._id} to={`/dashboard/admin/products/${p.slug}`} className="product-link">
                     <div className="card m-2" style={{ width: '10rem' }}>
-                      <img src={`/api/v1/product/product-photo/${p._id}`} className="card-img-top" alt={p.name} />
+                      <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} className="card-img-top" alt={p.name} />
                       <hr />
                       <div className="card-body text-center">
                         <h5 className="card-title">{p.name}</h5>

@@ -13,7 +13,7 @@ const UserProfile = () => {
 
 
   //state 
-  const [name , setName] = useState('');
+  const [name ,setName] = useState('');
   const [address , setAddress] = useState('');
   const [phone , setPhone] = useState('');
   const [email , setEmail] = useState('');
@@ -23,7 +23,6 @@ const UserProfile = () => {
 
   useEffect(()=>{
         const {name,email,address,phone} = auth?.user
-
         setName(name)
         setEmail(email)
         setAddress(address)

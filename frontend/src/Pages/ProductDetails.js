@@ -64,7 +64,7 @@ const ProductDetails = () => {
         <div className="row authBody">
           <div className="col-md-5 authBody">
             <div className="m-4 p-4">
-              <img src={`/api/v1/product/product-photo/${product._id}`} alt={product.name} className="card-img-top" />
+              <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${product._id}`} alt={product.name} className="card-img-top" />
             </div>
           </div>
 
@@ -85,7 +85,7 @@ const ProductDetails = () => {
           <div className="d-flex flex-wrap">
             {relatedProducts?.map((p) => (
               <div className="card cardStyle m-3" key={p._id} style={{ width: '15rem' }}>
-                <img src={`/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top" />
+                <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top" />
                 <hr />
                 <div className="card-body">
                   <h6 className="card-title h6">{p.name}</h6>

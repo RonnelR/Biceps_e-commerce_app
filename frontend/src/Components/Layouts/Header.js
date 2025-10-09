@@ -31,6 +31,7 @@ const logoutButton = ()=>{
     <>
  <nav className="navbar navbar-expand-lg navbar-dark bg-info" aria-label="Offcanvas navbar large">
   <div className="container-fluid">
+  
   <img style={{width:"2%"}} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpD8cirrbgyCl69qM1AsYaNBoaEt6hNJv9Y7WToPUvAwVSXObB' 
   alt='contact_us'></img>
   
@@ -75,7 +76,7 @@ const logoutButton = ()=>{
 
           <li>
        {categories?.map((c)=>(
-        
+  
             <Link key={c?._id}  to={`/Categories-products/${c?.slug}`} className="dropdown-item">{c?.name}</Link>
          
          ))}

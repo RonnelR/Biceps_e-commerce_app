@@ -49,7 +49,7 @@ const Wishlist = () => {
           {wishlistItems.map((p) => (
             <div className="authBody row card flex-row mt-3" key={p._id}>
               <div className="col-md-8" style={{ width: '15rem' }}>
-                <img src={`/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top" />
+                <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} alt={p.name} className="card-img-top" />
               </div>
               <div className="col-md-4 mt-5">
                 <h6 className="h6">Name: {p.name}</h6>

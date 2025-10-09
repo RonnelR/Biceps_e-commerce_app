@@ -10,7 +10,7 @@ export default function useCategory () {
     const getCat = async() =>{
 
         try {
-            const res =  await axios.get('/api/v1/category/all-category')
+            const res =  await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/category/all-category`)
             if(res.data?.success){
                 setCategories(res.data?.allCategory)
             }
@@ -22,6 +22,7 @@ export default function useCategory () {
 
     useEffect(()=>{
         getCat()
+        //eslint-disable-next-line
     },[])
 
     return categories;

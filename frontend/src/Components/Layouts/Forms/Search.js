@@ -14,7 +14,7 @@ const Search = () => {
   const handleSearch = async(e) =>{
     e.preventDefault()
     try {
-      const res = await axios.get(`/api/v1/product/search-product/${values.keyword}`)
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/search-product/${values.keyword}`)
 
         setValues({...values, results : res.data})
         navigate('/Search')

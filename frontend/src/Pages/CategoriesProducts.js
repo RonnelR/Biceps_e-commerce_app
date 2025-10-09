@@ -48,7 +48,7 @@ useEffect(()=>{
   <div className='d-flex flex-wrap'>
     {products.map((p)=>(
  <div className="card cardStyle m-3" key={p._id} style={{width: '15rem'}}>
-  <img src={`/api/v1/product/product-photo/${p._id}`} className="card-img-top " alt={p.name}/>
+  <img src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`} className="card-img-top " alt={p.name}/>
   <hr/>
   <div className="card-body text-center">
     <h6 className="card-title h6">{p.name}</h6>
