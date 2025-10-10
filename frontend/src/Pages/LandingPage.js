@@ -167,9 +167,9 @@ const LandingPage = () => {
           </Link>
         </div>
         <div className="mt-3">
-          <a href="#" className="footer-link mx-2">Facebook</a>
-          <a href="#" className="footer-link mx-2">Instagram</a>
-          <a href="#" className="footer-link mx-2">Twitter</a>
+          <a href="https://www.facebook.com" className="footer-link mx-2">Facebook</a>
+          <a href="https://www.instagram.com" className="footer-link mx-2">Instagram</a>
+          <a href="https://x.com" className="footer-link mx-2">Twitter</a>
         </div>
       </footer>
     </div>

@@ -8,7 +8,7 @@ import { useOtp } from '../../Context/OtpContext';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [otpState, setUserOtp] = useOtp(); // destructure correctly
+  const [setUserOtp] = useOtp(); // destructure correctly
 
   const navigate = useNavigate();
 
