@@ -197,7 +197,7 @@ const Home = () => {
 
           {/* Products */}
           <div className="col-lg-9 col-md-8">
-            <h2 className="pnf-title text-center mb-4">All Products</h2>
+         
             <div className="row justify-content-center">
               {products.map((p) => (
                 <div

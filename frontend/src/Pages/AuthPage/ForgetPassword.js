@@ -3,62 +3,72 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../Components/Layouts/Layout';
-import {useOtp} from '../../Context/OtpContext'
+import { useOtp } from '../../Context/OtpContext';
 
-const ForgetPassword = () => {
-  //useState
-  const [email,setEmail] = useState();
-  const [setUserOtp] = useOtp()
+const ForgotPassword = () => {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [otpState, setUserOtp] = useOtp(); // destructure correctly
 
-//useNavigate config
   const navigate = useNavigate();
 
-  //function for generate OTP
-const generateOtp = async (e)=>{
+  // Function to generate OTP
+  const generateOtp = async (e) => {
+    e.preventDefault();
+    if (!email) return toast.error('Email is required');
 
-e.preventDefault();
-try {
-//axios
-const res =await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/forget-password`,{email})
+    try {
+      setLoading(true);
+      const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/forget-password`, { email });
 
-if(res && res.data.success){
-toast.success(res.data && res.data.message);
+      if (res?.data?.success) {
+        toast.success(res.data.message || 'OTP sent successfully');
 
-setUserOtp({
-  email:email,
-  otp:res?.data.otp
-})
+        // store email and OTP in context
+        setUserOtp({
+          email: email,
+          otp: res?.data?.otp
+        });
 
- navigate('/Verify-Otp')
-}else{
-  toast.error(res.data.message)
-}
-} catch (error) {
-  console.log(error)
-  toast.error('something went wrong!!')
-}
-}
+        navigate('/Verify-Otp');
+      } else {
+        toast.error(res?.data?.message || 'Something went wrong');
+      }
+    } catch (error) {
+      console.error('Forgot Password Error:', error);
+      toast.error('Failed to generate OTP');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Layout title={"ForgetPassword - Biceps"}>
-    <div className='regAndLog'>
-    <div className='authBody'>
-    <h4 className='pnf-title'>FORGOT PASSWORD</h4>
-   <form onSubmit={generateOtp}>
-  <div  >
-    <input type="email" id='inputEmail' className="form-control" placeholder="Email" value={email}
-    onChange={(e)=>{setEmail(e.target.value)}} required />
-  </div>
-   
-  <div  className="authButton mt-2" >
-  <button  className='loginButton' type="submit">Generate Otp</button>
-  </div> 
-</form>
-</div>
-    </div>
+    <Layout title="Forgot Password - Biceps">
+      <div className="regAndLog">
+        <div className="authBody">
+          <h4 className="pnf-title text-center mb-4">FORGOT PASSWORD</h4>
+          <form onSubmit={generateOtp}>
+            <div>
+              <input
+                type="email"
+                id="inputEmail"
+                className="form-control"
+                placeholder="Enter your registered email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="authButton mt-3">
+              <button className="loginButton w-full" type="submit" disabled={loading}>
+                {loading ? 'Sending OTP...' : 'Generate OTP'}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Layout>
+  );
+};
 
-</Layout>
-  )
-}
-
-export default ForgetPassword;
+export default ForgotPassword;

@@ -26,6 +26,7 @@ import Wishlist from "./Pages/Wishlist";
 import ForgetPassword from "./Pages/AuthPage/ForgetPassword";
 import VerifyOtp from "./Pages/AuthPage/VerifyOtp";
 import NewPassword from "./Pages/AuthPage/NewPassword";
+import LandingPage from "./Pages/LandingPage";
 
 
 
@@ -34,8 +35,8 @@ function App() {
     <>
 
   <Routes>
-       
-    <Route path="/" element={<Home/>}  />
+    <Route path="/" element={<LandingPage/>}  />
+    <Route path="/home" element={<Home/>}  />
     <Route path="/product-details/:slug" element={<ProductDetails/>}  />
     <Route path="/Search" element={<SearchInput/>}  />
 

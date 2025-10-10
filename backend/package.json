@@ -7,7 +7,6 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon start"
-   
   },
   "keywords": [],
   "author": "Ronnel Rodrigues",
@@ -15,7 +14,7 @@
   "dependencies": {
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
-    "braintree": "^3.22.0",
+    "braintree": "^3.33.1",
     "buffer": "^6.0.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",

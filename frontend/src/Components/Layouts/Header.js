@@ -27,7 +27,7 @@ const Header = () => {
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpD8cirrbgyCl69qM1AsYaNBoaEt6hNJv9Y7WToPUvAwVSXObB"
             alt="logo"
           />
-          <Link to="/" className="navbar-brand text-warning p-2 fw-bold">
+          <Link to="/home" className="navbar-brand text-warning p-2 fw-bold">
             BICEPS
           </Link>
 
@@ -58,11 +58,6 @@ const Header = () => {
             <div className="offcanvas-body">
               <Search />
               <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li className="nav-item">
-                  <NavLink to="/" className="nav-link">
-                    Home
-                  </NavLink>
-                </li>
 
                 <li className="nav-item dropdown">
                   <Link
