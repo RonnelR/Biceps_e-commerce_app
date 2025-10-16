@@ -1,5 +1,5 @@
 import express from "express";
-import {registerController , loginController ,testController, forgetPasswordController, profleUpdateController, newPasswordController } from "../controllers/authController.js";
+import {registerController , loginController ,testController, forgetPasswordController, profleUpdateController, newPasswordController, addProductWishlistController, removeProductWishlistController, getWishlistProductController } from "../controllers/authController.js";
 import {isAdmin, isSignInRequired} from "../middlewares/authMiddleware.js";
 
 //Route object
@@ -33,5 +33,14 @@ router.get('/admin-required',isSignInRequired , isAdmin ,(req,res)=>{
 
 //put for profile Updation
  router.put('/profile', isSignInRequired, profleUpdateController)
+
+
+ //add product to wishlist
+router.patch('/addWishlist/:pId',isSignInRequired,addProductWishlistController)
+//remove product from wishlist
+router.delete('/removeWishlist/:pId',isSignInRequired,removeProductWishlistController)
+//view wishlist products
+router.get('/getWishlist',isSignInRequired,getWishlistProductController)
+
 
 export default router;

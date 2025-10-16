@@ -10,23 +10,36 @@ const Wishlist = () => {
   const [auth] = useAuth();
   const [wishlistItems, setWishlistItems] = useState([]);
 
-  // Fetch wishlist
+   // Wishlist
   const getWishlist = async () => {
-    try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/get-List`);
-      if (data?.items?.length > 0) setWishlistItems(data.items[0].wishlistItems);
-    } catch (error) {
-      console.log(error);
-      toast.error('Failed to fetch wishlist');
+  try {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/getWishlist`,
+      {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      }
+    );
+
+    if (data.success) {
+      setWishlistItems(data.wishlist.map((b) => b));
     }
-  };
+  } catch (error) {
+    console.log("Error fetching wishlist:", error);
+  }
+};
 
   // Remove item from wishlist
-  const handleRemove = async (pid) => {
+  const handleRemove = async (pId) => {
     try {
-      const { data } = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/remove-Products`, { pid });
+      const { data } = await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/removeWishlist/${pId}`,{
+        headers:{
+          Authorization:`Bearer ${auth?.token}`
+        }
+      });
       if (data) {
-        toast.success(data.message);
+        toast.success("Removed from the wishlist");
         getWishlist();
       }
     } catch (error) {
@@ -34,10 +47,11 @@ const Wishlist = () => {
     }
   };
 
-  useEffect(() => {
-    if (auth?.token) getWishlist();
-    //eslint-disable-next-line
-  }, [auth?.token]);
+useEffect(() => {
+  getWishlist();
+  //eslint-disable-next-line
+}, [])
+
 
   return (
     <Layout title="Wishlist - Biceps">
@@ -53,7 +67,7 @@ const Wishlist = () => {
             <div className="col-md-6" key={p._id}>
               <div className="card shadow h-100 flex-row p-3 align-items-center">
                 <img
-                  src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p._id}`}
+                  src={`${process.env.REACT_APP_BACKEND_URL}/api/v1/product/product-photo/${p?._id}`}
                   alt={p.name}
                   className="img-fluid rounded"
                   style={{ width: '100px', height: '100px', objectFit: 'cover' }}

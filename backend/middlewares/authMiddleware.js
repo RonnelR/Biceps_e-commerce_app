@@ -1,41 +1,42 @@
 import JWT from "jsonwebtoken";
 import userModel from "../models/userModel.js";
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
-//checking is user already logedin
-export const isSignInRequired =async (req,res,next)=>{
-    try {
-        const decode =  JWT.verify(req.headers.authorization ,process.env.TOKEN_SECRET );
-         req.user =  decode;
-        next();
-    } catch (error) {
-      console.log(error);
-      res.status(401).send({
-        message:'Error in JWT'
-      })
+// Middleware: check if token is valid
+export const isSignInRequired = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "No token provided" });
     }
+
+    const token = authHeader.split(" ")[1];
+    const decoded = JWT.verify(token, process.env.TOKEN_SECRET);
+
+    req.user = decoded; // attach user info to req
+    next();
+  } catch (error) {
+    console.error("JWT Error:", error);
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
 };
 
-//checking Admin
-export const isAdmin = async (req,res,next)=>{
-    try {
-      const user = await userModel.findById(req.user._id);
-      if(user.role !== 1){
-        return res.status(401).send({
-            success:false,
-            message:"UnAuthorized User"
-        });
-      }else{
-        next();
-      }
-        
-    } catch (error) {
-        console.log(error);
-        res.status(401).send({
-            success:false,
-            message:'error in admin middleware',error
-        });
+// Middleware: check admin role
+export const isAdmin = async (req, res, next) => {
+  try {
+    const user = await userModel.findById(req.user._id);
+    if (user.role !== 1) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access",
+      });
     }
+    next();
+  } catch (error) {
+    console.error("Admin Middleware Error:", error);
+    res.status(500).json({ success: false, message: "Server error", error });
+  }
 };

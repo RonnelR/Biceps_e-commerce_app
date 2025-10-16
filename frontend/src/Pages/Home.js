@@ -8,8 +8,8 @@ import { useCart } from "../Context/CartContext";
 import { useAuth } from "../Context/Auth";
 import { Prices } from "../Components/Layouts/Prices";
 import CarouselPage from "../Components/Layouts/CarouselPage";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { HeartIcon} from "lucide-react"
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -17,12 +17,21 @@ const Home = () => {
   const [cart, setCart] = useCart();
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+
+
+  //wishlist
   const [wishlistItems, setWishlistItems] = useState([]);
+
+
+
+
+
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+
 
   // Fetch categories
   const getAllCategories = async () => {
@@ -91,31 +100,61 @@ const Home = () => {
 
   // Wishlist
   const getWishlist = async () => {
-    try {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/get-List`
-      );
-      if (data?.items?.length > 0)
-        setWishlistItems(data.items[0].wishlistItems);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleWish = async (pid) => {
-    try {
-      const res = await axios.put(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v1/product/wishlist/add-Products`,
-        { pid }
-      );
-      if (res?.data) {
-        getWishlist();
-        toast(res.data.message);
+  try {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/getWishlist`,
+      {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
       }
-    } catch (error) {
-      console.log(error);
+    );
+
+    if (data.success) {
+      setWishlistItems(data.wishlist.map((b) => b._id));
     }
-  };
+  } catch (error) {
+    console.log("Error fetching wishlist:", error);
+  }
+};
+
+  
+  //wishlist toggle 
+   const handleToggleSave = async (e, pId) => {
+  e.stopPropagation();
+  try {
+    if (!wishlistItems.includes(pId)) {
+      // Add to wishlist
+      const { data } = await axios.patch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/addWishlist/${pId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${auth?.token}` },
+        }
+      );
+      if (data.success) {
+        setWishlistItems((prev) => [...prev, pId]); // ✅ add
+        toast.success("Added to wishlist!");
+      }
+    } else {
+      // Remove from wishlist
+      const { data } = await axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/removeWishlist/${pId}`,
+        {
+          headers: { Authorization: `Bearer ${auth?.token}` },
+        }
+      );
+      if (data.success) {
+        setWishlistItems((prev) => prev.filter((id) => id !== pId)); // ✅ remove
+        toast.error("Removed from wishlist!");
+      }
+    }
+  } catch (err) {
+    console.error("Toggle wishlist error:", err.response?.data || err.message);
+    toast.error("Something went wrong");
+  }
+};
+
 
   // Cart
   const handleCart = (product) => {
@@ -137,9 +176,9 @@ const Home = () => {
     getAllCategories();
     getTotalCount();
     getProducts();
-    if (auth?.token) getWishlist();
+    getWishlist();
     // eslint-disable-next-line
-  }, [auth?.token]);
+  }, []);
 
   useEffect(() => {
     if (checked.length || radio.length) filterProducts();
@@ -221,24 +260,26 @@ const Home = () => {
                         className="card-img-top mt-3"
                         style={{ height: "180px", objectFit: "cover" }}
                       />
-                      {auth?.token && (
-                        <button
-                          className="wishlistButton position-absolute top-0 end-0 m-2 border-0 bg-transparent"
-                          onClick={() => handleWish(p._id)}
-                        >
-                          <FontAwesomeIcon
-                            icon={faHeart}
-                            size="lg"
-                            style={{
-                              color: wishlistItems.some(
-                                (item) => item._id === p._id
-                              )
-                                ? "#ff051e"
-                                : "#6c757d",
-                            }}
-                          />
-                        </button>
-                      )}
+            
+
+{wishlistItems.includes(p?._id) ?  ( <HeartIcon
+      onClick={(e) => handleToggleSave(e, p._id)}
+      style={{
+        width: "20px",
+        height: "20px",
+        cursor: "pointer",
+        color: "red",
+      }}
+      fill="currentColor"
+    />
+  ) : (
+    <HeartIcon
+      onClick={(e) => handleToggleSave(e, p._id)}
+      onMouseEnter={(e) => (e.target.style.color = "black")}
+      onMouseLeave={(e) => (e.target.style.color = "gray")}
+    />
+  )}
+
                     </div>
                     <div className="card-body d-flex flex-column">
                       <h6 className="fw-bold">{p.name}</h6>
