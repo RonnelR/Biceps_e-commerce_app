@@ -1,5 +1,5 @@
 import express from 'express';
-import {BraintreePaymentController, BraintreeTokenController, addProdToWishlistController, allOrdersController, allProductController, createProductController, deleteProdFromWishlistController, deleteProductController, getWishlistController, orderListController, productCountController, productFilterCotroller, productListController, productPhotoController, productsBasedOnCategoryController, relatedProductController, searchProductController, singleProductController, updateOrdersController, updateProductController } from '../controllers/productControllers.js';
+import {BraintreePaymentController, BraintreeTokenController,allOrdersController, allProductController, createProductController,deleteProductController,orderListController, productCountController, productFilterCotroller, productListController, productPhotoController, productsBasedOnCategoryController, relatedProductController, searchProductController, singleProductController, updateOrdersController, updateProductController } from '../controllers/productControllers.js';
 import { isAdmin, isSignInRequired } from '../middlewares/authMiddleware.js';
 import formidableMiddleware from 'express-formidable';
 
@@ -60,11 +60,3 @@ router.get('/all-orders' ,isSignInRequired , isAdmin , allOrdersController)
 //update orders
 router.put('/update-orders/:orderId' ,isSignInRequired ,isAdmin , updateOrdersController )
 
-//wishlist get 
-router.get('/wishlist/get-List' ,isSignInRequired, getWishlistController)
-
-//add wishlist items
-router.put('/wishlist/add-Products',isSignInRequired, addProdToWishlistController)
-
-//remove product from wishlist
-router.put('/wishlist/remove-Products',isSignInRequired, deleteProdFromWishlistController)
