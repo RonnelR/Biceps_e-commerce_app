@@ -8,7 +8,8 @@ import { useOtp } from '../../Context/OtpContext';
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-const [userOtp = {}, setUserOtp = () => {}] = useOtp() || [];
+const [, setUserOtp] = useOtp();
+
 
 
 
